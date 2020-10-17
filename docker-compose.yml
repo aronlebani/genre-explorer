@@ -3,8 +3,8 @@ version: '3'
 services:
   worker:
     build:
-      context: .
-      dockerfile: ./worker/Dockerfile
+      context: ./worker
+      dockerfile: Dockerfile
     ports:
       - "3002:3002"
     depends_on:
@@ -23,10 +23,11 @@ services:
     container_name: db
     env_file:
       - ./db/.env
+    restart: always
   api:
     build:
       context: ./api
-      dockerfile: ./api/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "3004:3004"
     depends_on:
@@ -36,19 +37,20 @@ services:
     container_name: api
     env_file:
       - ./api/.env
-  app:
-    build:
-      context: ./app
-      dockerfile: ./app/Dockerfile
-    ports:
-      - "3006:3006"
-    depends_on:
-      - api
-    networks:
-      - genre-explorer-net
-    container_name: app
-    env_file:
-      - ./app.env
+    restart: always
+  # app:
+  #   build:
+  #     context: ./app
+  #     dockerfile: ./app/Dockerfile
+  #   ports:
+  #     - "3006:3006"
+  #   depends_on:
+  #     - api
+  #   networks:
+  #     - genre-explorer-net
+  #   container_name: app
+  #   env_file:
+  #     - ./app/.env
 
 volumes:
   genre-explorer-db:
