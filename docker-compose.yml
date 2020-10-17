@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  worker:
+    build:
+      context: .
+      dockerfile: ./worker/Dockerfile
+    ports:
+      - "3002:3002"
+    depends_on:
+      - db
+    networks:
+      - genre-explorer-net
+    container_name: worker
+    env_file:
+      - ./worker/.env
+  db:
+    image: postgres:latest
+    volumes:
+      - ./genre-explorer-db:/var/lib/postgresql/data
+    networks:
+      - genre-explorer-net
+    container_name: db
+    env_file:
+      - ./db/.env
+  api:
+    build:
+      context: ./api
+      dockerfile: ./api/Dockerfile
+    ports:
+      - "3004:3004"
+    depends_on:
+      - db
+    networks:
+      - genre-explorer-net
+    container_name: api
+    env_file:
+      - ./api/.env
+  app:
+    build:
+      context: ./app
+      dockerfile: ./app/Dockerfile
+    ports:
+      - "3006:3006"
+    depends_on:
+      - api
+    networks:
+      - genre-explorer-net
+    container_name: app
+    env_file:
+      - ./app.env
+
+volumes:
+  genre-explorer-db:
+
+networks:
+  genre-explorer-net:
+    driver: bridge

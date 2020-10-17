@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 	"strings"
-	"regexp"
+    "regexp"
 	"github.com/gocolly/colly"
 	"github.com/PuerkitoBio/goquery"
 )
@@ -59,14 +59,7 @@ func findDerivativeForms(genre *Genre, c *colly.Collector, domain string) {
 	c.Wait()
 }
 
-func Crawl(domain string, slug string, name string, glob string) Genre {
-	root := Genre{
-		Name: name,
-		Url: slug,
-		Parent: nil,
-		Children: nil,
-	}
-
+func Crawl(domain string, glob string, root *Genre) {
 	c := colly.NewCollector(
 		colly.AllowedDomains(domain),
 		colly.URLFilters(regexp.MustCompile(glob)),
@@ -80,7 +73,5 @@ func Crawl(domain string, slug string, name string, glob string) Genre {
 		Parallelism: 2,
 	})
 
-	findDerivativeForms(&root, c.Clone(), domain)
-
-	return root
+	findDerivativeForms(root, c.Clone(), domain)
 }
