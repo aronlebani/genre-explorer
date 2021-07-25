@@ -9,8 +9,8 @@ type Message = {
 type Genre = {
     Name: string;
     Url: string;
-    StylisticOrigins: List<Genre>;
-    DerivativeForms: List<Genre>;
-    SubGenres: List<Genre>;
-    FusionGenres: List<Genre>;
+    // StylisticOrigins: List<Genre>;
+    // DerivativeForms: List<Genre>;
+    // SubGenres: List<Genre>;
+    // FusionGenres: List<Genre>;
 }
