@@ -8,7 +8,7 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
-open genre_explorer.HttpHandlers
+open genre_explorer.Controllers
 
 // ---------------------------------
 // Web app
@@ -22,7 +22,8 @@ let webApp =
                     route "/hello" >=> handleGetHello
                 ]
             ])
-        setStatusCode 404 >=> text "Not Found" ]
+        setStatusCode 404 >=> text "Not Found"
+    ]
 
 // ---------------------------------
 // Error handler

@@ -4,16 +4,19 @@
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>genre-explorer.App</AssemblyName>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Giraffe" Version="5.0.0-rc-6" />
+    <PackageReference Include="Npgsql.FSharp" Version="4.0.0" />
     <PackageReference Include="Ply" Version="0.3.*" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Include="Models.fs" />
-    <Compile Include="HttpHandlers.fs" />
+    <Compile Include="Repositories.fs" />
+    <Compile Include="Controllers.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
