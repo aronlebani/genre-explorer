@@ -25,24 +25,20 @@ module Crawler =
 
     let isValidLink (url: string, name: string): bool =
         match url with
+        | x when x.Contains("#") -> false
         | x when x.Contains("/wiki") -> true
         | _ -> false
 
     let rec crawl (url: string, name: string) =
         printfn "{ name: %s, url: %s }" name url
 
-        let infoBox: HtmlNode =
-            HtmlDocument.Load("https://en.wikipedia.org" + url).CssSelect(".infobox tbody")
-            |> Seq.head
-
-        let infoRows: seq<HtmlNode> = infoBox.Descendants("tr")
-
-        let derivativeFormsRow: HtmlNode option =
-            infoRows
-            |> Seq.tryFind isDerivativeForm
-
-        match derivativeFormsRow with
-        | Some derivativeForm -> derivativeForm.Descendants("a") |> Seq.map extractLink |> Seq.filter isValidLink |> Seq.iter crawl
+        match HtmlDocument.Load("https://en.wikipedia.org" + url).CssSelect(".infobox tbody") |> Seq.tryHead with
         | None -> ()
-
-        ()
+        | Some infoBox ->
+            match infoBox.CssSelect("tr") |> Seq.tryFind isDerivativeForm with
+            | None -> ()
+            | Some derivativeForm ->
+                derivativeForm.Descendants("a")
+                |> Seq.map extractLink
+                |> Seq.filter isValidLink
+                |> Seq.iter crawl
