@@ -6,10 +6,20 @@ module Controllers =
     open FSharp.Control.Tasks
     open Giraffe
     open genre_explorer.Repositories
+    open genre_explorer.Models
 
-    let handleGetHello =
-        fun (next : HttpFunc) (ctx : HttpContext) ->
+    let handleGetGenres: HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
             task {
-                let response = getMessage
+                let response: Genre list = readGenres
+                return! json response next ctx
+            }
+
+    let handlePostGenre: HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let payload: Genre = ctx.BindJsonAsync<Genre>()
+                printfn "%s" payload.Name
+                let response: int = createGenre payload
                 return! json response next ctx
             }
