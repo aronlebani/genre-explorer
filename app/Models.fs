@@ -7,6 +7,7 @@ type Message = {
 
 [<CLIMutable>]
 type Genre = {
+    Id: int;
     Name: string;
     Url: string;
     // StylisticOrigins: List<Genre>;
