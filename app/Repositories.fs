@@ -20,8 +20,17 @@ module Repositories =
         |> Sql.parameters [ ("name", Sql.string payload.Name); ("url", Sql.string payload.Url)]
         |> Sql.executeNonQuery
 
-    let readGenre id =
-        ()
+    let readGenre (id: int): Genre =
+        connectionString
+        |> Sql.connect
+        |> Sql.query "SELECT * FROM genres WHERE id = @id;"
+        |> Sql.parameters [ "id", Sql.int id ]
+        |> Sql.executeRow (fun read ->
+            {
+                Id = read.int "id"
+                Name = read.text "name"
+                Url = read.text "url"
+            })
 
     let readGenres: Genre list =
         connectionString

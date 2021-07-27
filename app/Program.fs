@@ -16,14 +16,13 @@ open genre_explorer.Controllers
 
 let webApp =
     choose [
-        subRoute "/api"
+        subRoute "/api/genres"
             (choose [
                 GET >=> choose [
-                    route "/genres" >=> handleGetGenres
+                    route "" >=> handleGetGenres
+                    routef "/%i" handleGetGenre
                 ]
-                POST >=> choose [
-                    route "/genres" >=> handlePostGenre
-                ]
+                POST >=> route "" >=> handlePostGenre
             ])
         setStatusCode 404 >=> text "Not Found"
     ]

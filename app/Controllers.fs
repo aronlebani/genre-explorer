@@ -15,11 +15,17 @@ module Controllers =
                 return! json response next ctx
             }
 
+    let handleGetGenre (id: int): HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let response: Genre = readGenre id
+                return! json response next ctx
+            }
+
     let handlePostGenre: HttpHandler =
         fun (next: HttpFunc) (ctx: HttpContext) ->
             task {
-                let payload: Genre = ctx.BindJsonAsync<Genre>()
-                printfn "%s" payload.Name
+                let! payload = ctx.BindJsonAsync<Genre>()
                 let response: int = createGenre payload
                 return! json response next ctx
             }
