@@ -2,6 +2,7 @@ namespace genre_explorer
 
 module Repositories =
 
+    open System
     open Npgsql.FSharp
     open genre_explorer.Models
 
@@ -16,8 +17,8 @@ module Repositories =
     let createGenre (payload: Genre): int =
         connectionString
         |> Sql.connect
-        |> Sql.query "INSERT INTO genres (name, url) VALUES (@name, @url);"
-        |> Sql.parameters [ ("name", Sql.string payload.Name); ("url", Sql.string payload.Url)]
+        |> Sql.query "INSERT INTO genres (name, url, created_date, updated_date) VALUES (@name, @url, @createdDate, @updatedDate);"
+        |> Sql.parameters [ ("name", Sql.string payload.Name); ("url", Sql.string payload.Url); ("createdDate", Sql.timestamp DateTime.UtcNow); ("updatedDate", Sql.timestamp DateTime.UtcNow)]
         |> Sql.executeNonQuery
 
     let readGenre (id: int): Genre =
@@ -30,6 +31,8 @@ module Repositories =
                 Id = read.int "id"
                 Name = read.text "name"
                 Url = read.text "url"
+                CreatedDate = read.dateTime "created_date"
+                UpdatedDate = read.dateTime "updated_date"
             })
 
     let readGenres: Genre list =
@@ -41,6 +44,8 @@ module Repositories =
                 Id = read.int "id"
                 Name = read.text "name"
                 Url = read.text "url"
+                CreatedDate = read.dateTime "created_date"
+                UpdatedDate = read.dateTime "updated_date"
             })
 
     let updateGenre id =
