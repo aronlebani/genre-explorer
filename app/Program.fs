@@ -23,6 +23,9 @@ let webApp =
                     routef "/%i" handleGetGenre
                 ]
                 POST >=> route "" >=> handlePostGenre
+                DELETE >=> choose [
+                    routef "/%i" handleDeleteGenre
+                ]
             ])
         setStatusCode 404 >=> text "Not Found"
     ]

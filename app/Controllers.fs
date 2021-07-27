@@ -29,3 +29,10 @@ module Controllers =
                 let response: int = createGenre payload
                 return! json response next ctx
             }
+
+    let handleDeleteGenre (id: int): HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let response: int = deleteGenre id
+                return! json response next ctx
+            }

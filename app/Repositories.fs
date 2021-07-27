@@ -46,5 +46,9 @@ module Repositories =
     let updateGenre id =
         ()
 
-    let deleteGenre id =
-        ()
+    let deleteGenre (id: int): int =
+        connectionString
+        |> Sql.connect
+        |> Sql.query "DELETE FROM genres WHERE id = @id;"
+        |> Sql.parameters [ "id", Sql.int id ]
+        |> Sql.executeNonQuery
