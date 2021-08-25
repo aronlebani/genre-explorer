@@ -19,6 +19,9 @@ services:
     image: postgres:latest
     volumes:
       - ./db:/var/lib/postgresql/data
+      - ./scripts:/var/scripts
+    ports:
+      - "6000:5432"
     networks:
       - app-net
     container_name: db

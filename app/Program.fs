@@ -21,11 +21,13 @@ let webApp =
                 GET >=> choose [
                     route "" >=> handleGetGenres
                     routef "/%i" handleGetGenre
+                    routef "/%i/derivatives" handleGetGenreDerivatives
                 ]
-                POST >=> route "" >=> handlePostGenre
-                DELETE >=> choose [
-                    routef "/%i" handleDeleteGenre
+                POST >=> choose [
+                    route "" >=> handlePostGenre
+                    (* route "/derivative" >=> handlePostDerivative *)
                 ]
+                DELETE >=> routef "/%i" handleDeleteGenre
             ])
         setStatusCode 404 >=> text "Not Found"
     ]

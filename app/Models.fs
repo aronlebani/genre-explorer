@@ -2,7 +2,6 @@ namespace genre_explorer.Models
 
 open System
 
-[<CLIMutable>]
 type Genre = {
     Id: int;
     Name: string;
@@ -13,4 +12,9 @@ type Genre = {
     // DerivativeForms: List<Genre>;
     // SubGenres: List<Genre>;
     // FusionGenres: List<Genre>;
+}
+
+type Derivative = {
+    GenreId: int;
+    derivativeGenre: Genre;
 }
