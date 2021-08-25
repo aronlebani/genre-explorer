@@ -37,13 +37,13 @@ module Controllers =
                 return! json response next ctx
             }
     
-    (* let handlePostDerivative: HttpHandler = *)
-    (*     fun (next: HttpFunc) (ctx: HttpContext) -> *)
-    (*         task { *)
-    (*             let! payload = ctx.BindJsonAsync<Derivative>() *)
-    (*             let response: int = createDerivative payload.GenreId payload.derivativeGenre *)
-    (*             return !json response next ctx *)
-    (*         } *)
+    let handlePostDerivative (id: int): HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let! payload = ctx.BindJsonAsync<Genre>()
+                let response: int = createDerivative id payload
+                return! json response next ctx
+            }
 
     let handleDeleteGenre (id: int): HttpHandler =
         fun (next: HttpFunc) (ctx: HttpContext) ->

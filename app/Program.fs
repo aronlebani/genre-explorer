@@ -25,7 +25,7 @@ let webApp =
                 ]
                 POST >=> choose [
                     route "" >=> handlePostGenre
-                    (* route "/derivative" >=> handlePostDerivative *)
+                    routef "/%i/derivative" handlePostDerivative
                 ]
                 DELETE >=> routef "/%i" handleDeleteGenre
             ])
