@@ -8,13 +8,4 @@ type Genre = {
     Url: string;
     CreatedDate: DateTime;
     UpdatedDate: DateTime;
-    // StylisticOrigins: List<Genre>;
-    // DerivativeForms: List<Genre>;
-    // SubGenres: List<Genre>;
-    // FusionGenres: List<Genre>;
-}
-
-type Derivative = {
-    GenreId: int;
-    derivativeGenre: Genre;
 }

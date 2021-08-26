@@ -22,10 +22,16 @@ let webApp =
                     route "" >=> handleGetGenres
                     routef "/%i" handleGetGenre
                     routef "/%i/derivatives" handleGetGenreDerivatives
+                    routef "/%i/origins" handleGetGenreOrigins
+                    routef "/%i/subgenres" handleGetGenreSubgenres
+                    routef "/%i/fusion" handleGetGenreFusions
                 ]
                 POST >=> choose [
                     route "" >=> handlePostGenre
                     routef "/%i/derivative" handlePostDerivative
+                    routef "/%i/origin" handlePostOrigin
+                    routef "/%i/subgenre" handlePostSubgenre
+                    routef "/%i/fusion" handlePostFusion
                 ]
                 DELETE >=> routef "/%i" handleDeleteGenre
             ])

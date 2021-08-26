@@ -29,6 +29,27 @@ module Controllers =
                 return! json response next ctx
             }
 
+    let handleGetGenreOrigins (id: int): HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let response: Genre list = readGenreOrigins id
+                return! json response next ctx
+            }
+
+    let handleGetGenreSubgenres (id: int): HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let response: Genre list = readGenreSubgenres id
+                return! json response next ctx
+            }
+
+    let handleGetGenreFusions (id: int): HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let response: Genre list = readGenreFusions id
+                return! json response next ctx
+            }
+
     let handlePostGenre: HttpHandler =
         fun (next: HttpFunc) (ctx: HttpContext) ->
             task {
@@ -42,6 +63,30 @@ module Controllers =
             task {
                 let! payload = ctx.BindJsonAsync<Genre>()
                 let response: int = createDerivative id payload
+                return! json response next ctx
+            }
+    
+    let handlePostOrigin (id: int): HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let! payload = ctx.BindJsonAsync<Genre>()
+                let response: int = createOrigin id payload
+                return! json response next ctx
+            }
+    
+    let handlePostSubgenre (id: int): HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let! payload = ctx.BindJsonAsync<Genre>()
+                let response: int = createSubgenre id payload
+                return! json response next ctx
+            }
+    
+    let handlePostFusion (id: int): HttpHandler =
+        fun (next: HttpFunc) (ctx: HttpContext) ->
+            task {
+                let! payload = ctx.BindJsonAsync<Genre>()
+                let response: int = createFusion id payload
                 return! json response next ctx
             }
 
