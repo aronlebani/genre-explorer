@@ -13,10 +13,18 @@ module Crawler =
         FusionGenres: List<Genre>;
     }
 
-    let isDerivativeForm (tr: HtmlNode): bool =
+    let is (category: string) (tr: HtmlNode): bool =
         match tr.CssSelect("th") |> Seq.tryHead with
-        | Some th -> th.InnerText() = "Derivative forms"
+        | Some th -> th.InnerText() = category
         | None -> false
+
+    let isDerivativeForm = is "Derivative forms"
+
+    let isStylisticOrigin = is "Stylistic origins"
+
+    let isSubgenre = is "Subgenres"
+
+    let isFusion = is "Fusion genres"
 
     let extractLink (a: HtmlNode): string * string =
         match a.TryGetAttribute("href") with
@@ -29,16 +37,20 @@ module Crawler =
         | x when x.Contains("/wiki") -> true
         | _ -> false
 
-    let rec crawl (url: string, name: string) =
+    let rec crawl (filter: HtmlNode -> bool) (url: string, name: string) =
         printfn "{ name: %s, url: %s }" name url
 
         match HtmlDocument.Load("https://en.wikipedia.org" + url).CssSelect(".infobox tbody") |> Seq.tryHead with
         | None -> ()
-        | Some infoBox ->
-            match infoBox.CssSelect("tr") |> Seq.tryFind isDerivativeForm with
+        | Some infobox ->
+            match infobox.CssSelect("tr") |> Seq.tryFind filter with
             | None -> ()
             | Some derivativeForm ->
                 derivativeForm.Descendants("a")
                 |> Seq.map extractLink
                 |> Seq.filter isValidLink
-                |> Seq.iter crawl
+                |> Seq.iter (crawl filter)
+
+    let crawlDerivativeForms = crawl isDerivativeForm
+
+    let crawlStylisticOrigins = crawl isStylisticOrigin
