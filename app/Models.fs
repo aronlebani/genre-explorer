@@ -1,4 +1,4 @@
-namespace genre_explorer
+module Models
 
 open System
 

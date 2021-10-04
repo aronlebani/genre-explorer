@@ -1,5 +1,3 @@
-module genre_explorer.App
-
 open System
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
@@ -8,7 +6,7 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
-open genre_explorer.Controllers
+open Controllers
 
 // ---------------------------------
 // Web app
