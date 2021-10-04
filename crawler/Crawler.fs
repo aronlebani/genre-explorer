@@ -13,6 +13,11 @@ module Crawler =
         FusionGenres: List<Genre>;
     }
 
+    type Link = {
+        Url: string;
+        Name: string;
+    }
+
     let is (category: string) (tr: HtmlNode): bool =
         match tr.CssSelect("th") |> Seq.tryHead with
         | Some th -> th.InnerText() = category
@@ -26,21 +31,21 @@ module Crawler =
 
     let isFusion = is "Fusion genres"
 
-    let extractLink (a: HtmlNode): string * string =
+    let extractLink (a: HtmlNode): Link =
         match a.TryGetAttribute("href") with
-        | Some href -> href.Value(), a.InnerText()
-        | None -> "", ""
+        | None -> { Url = ""; Name = "" }
+        | Some href -> { Url = href.Value(); Name = a.InnerText() }
 
-    let isValidLink (url: string, name: string): bool =
-        match url with
+    let isValidLink (link: Link): bool =
+        match link.Url with
         | x when x.Contains("#") -> false
         | x when x.Contains("/wiki") -> true
         | _ -> false
 
-    let rec crawl (filter: HtmlNode -> bool) (url: string, name: string) =
-        printfn "{ name: %s, url: %s }" name url
+    let rec crawl (filter: HtmlNode -> bool) (link: Link) =
+        printfn "{ name: %s, url: %s }" link.Name link.Url
 
-        match HtmlDocument.Load("https://en.wikipedia.org" + url).CssSelect(".infobox tbody") |> Seq.tryHead with
+        match HtmlDocument.Load("https://en.wikipedia.org" + link.Url).CssSelect(".infobox tbody") |> Seq.tryHead with
         | None -> ()
         | Some infobox ->
             match infobox.CssSelect("tr") |> Seq.tryFind filter with
