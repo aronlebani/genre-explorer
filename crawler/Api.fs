@@ -1,35 +1,25 @@
-namespace Crawler
+module Api
 
-module Api =
+open FSharp.Data
+open FSharp.Data.HttpRequestHeaders
+open Genre
 
-    open FSharp.Data
+let postGenre (genre: Genre): string =
+    let url = "http://localhost:5000/api/genres"
+    let headers = [ ContentType HttpContentTypes.Json ]
+    let payload =
+        genre
+        |> Json.serialize
+        |> TextRequest
 
-    let postGenre (url: string, name: string) =
-        let genre: Genre = {
-            Name = name
-            Url = url
-        }
+    Http.RequestString (url, headers = headers, body = payload)
 
-        Http.RequestString (
-            "http://localhost:5000/api/genres",
-            headers = [ ContentType HttpContentTypes.Json ],
-            body =
-                genre
-                |> Json.serialize
-                |> TextRequest
-        )
+let postDerivative (id: int) (genre: Genre): string =
+    let url = "http://localhost:5000/api/genres" + sprintf "%i" id
+    let headers = [ ContentType HttpContentTypes.Json ]
+    let payload =
+        genre
+        |> Json.serialize
+        |> TextRequest
 
-    let postDerivative (id: int) (url: string, name: string) =
-        let genre: Genre = {
-            Name = name
-            Url = url
-        }
-
-        Http.RequestString (
-            "http://localhost:5000/api/genres" + id
-            headers = [ ContentType HttpContentTypes.Json ],
-            body =
-                genre
-                |> Json.serialize
-                |> TextRequest
-        )
+    Http.RequestString (url, headers = headers, body = payload)

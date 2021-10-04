@@ -1,12 +1,12 @@
 open System
 open Crawler
 
-let initialLink: Crawler.Link = {
+let initialLink: Link = {
     Url = "/wiki/Alternative_rock"
     Name = "Alternative rock"
 }
 
 [<EntryPoint>]
 let main argv =
-    Crawler.crawlDerivativeForms initialLink
+    crawlDerivativeForms initialLink
     0

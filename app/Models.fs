@@ -1,4 +1,4 @@
-namespace genre_explorer.Models
+namespace genre_explorer
 
 open System
 
