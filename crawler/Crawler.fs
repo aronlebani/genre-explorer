@@ -38,11 +38,11 @@ let isValidLink (link: Link): bool =
     | x when x.Contains("/wiki") -> true
     | _ -> false
 
-let rec crawl (filter: HtmlNode -> bool) (link: Link) =
+let rec crawl (filter: HtmlNode -> bool) (id: int) (link: Link) =
     printfn "{ name: %s, url: %s }" link.Name link.Url
 
     let genre: Genre = genreFromLink link
-    Api.postGenre genre
+    Api.postDerivative id genre
 
     match HtmlDocument.Load("https://en.wikipedia.org" + link.Url).CssSelect(".infobox tbody") |> Seq.tryHead with
     | None -> ()
@@ -53,8 +53,13 @@ let rec crawl (filter: HtmlNode -> bool) (link: Link) =
             derivativeForm.Descendants("a")
             |> Seq.map extractLink
             |> Seq.filter isValidLink
-            |> Seq.iter (crawl filter)
+            |> Seq.iter (crawl filter id)
 
-let crawlDerivativeForms = crawl isDerivativeForm
+let crawlDerivativeForms (link: Link) =
+    let genre: Genre = genreFromLink link
+    let id: int = Api.postGenre genre
 
-let crawlStylisticOrigins = crawl isStylisticOrigin
+    crawl isDerivativeForm id link
+
+let crawlStylisticOrigins (link: Link) =
+    crawl isStylisticOrigin
